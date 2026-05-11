@@ -1,17 +1,20 @@
+from dataclasses import dataclass
+
 import numpy as np
+from numpy.typing import NDArray
 from sklearn.decomposition import PCA
 from scipy.optimize import least_squares
 
+@dataclass
 class FitResult:
-    def __init__(self, e1, e2, origin, c_fit, u0_fit, v0_fit, u_start, u_end):
-        self.e1 = e1
-        self.e2 = e2
-        self.origin = origin
-        self.c_fit = c_fit
-        self.u0_fit = u0_fit
-        self.v0_fit = v0_fit
-        self.u_start = u_start
-        self.u_end = u_end
+    e1: NDArray[np.float64]
+    e2: NDArray[np.float64]
+    origin: NDArray[np.float64]
+    c_fit: float
+    u0_fit: float
+    v0_fit: float
+    u_start: float
+    u_end: float
 
 def catenary(u, c, u0, v0):
     return v0 + c * (np.cosh((u - u0) / c) - 1.0)

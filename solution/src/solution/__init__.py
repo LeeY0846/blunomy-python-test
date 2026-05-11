@@ -1,1 +1,1 @@
-from .orchestrate import fit
+from .orchestrate import fit, plot_fitted_curve
