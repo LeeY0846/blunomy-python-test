@@ -2,17 +2,11 @@
 authors = ["Yang Li <ylee091126@gmail.com>"]
 channels = ["conda-forge"]
 name = "blunomy-python-test"
-platforms = ["osx-arm64", "win-64"]
+platforms = ["osx-arm64", "win-64", "linux-64", "osx-64"]
 version = "0.1.0"
-
-[tasks.research]
-cmd = "python research/main.py"
 
 [feature.research.tasks.lab]
 cmd = "jupyter lab"
-
-[tasks.solution]
-cmd = "python solution/main.py"
 
 [dependencies]
 python = ">=3.14.4,<3.15"
