@@ -1,7 +1,5 @@
 # Blunomy Python Test
 
-This project explores and solves a wire fitting problem from LiDAR point-cloud data. The input datasets are Parquet files containing `x`, `y`, and `z` coordinates for points sampled from overhead wires.
-
 ## Project Structure
 
 ```text
@@ -50,4 +48,43 @@ pixi run -e solution pytest
 │       ├── 02_clustering           # Explore using HDBSCAN to cluster the points
 │       ├── 03_curve_fit            # Use PCA to get the along-wire direction, find the plane for each wire, and use least squares to fit the curve
 │       └── 04_outcome              # Demonstrate how to use Solution package, and illustrate a limitation of the method
+```
+
+## Usage
+
+To use the `fit` function in the solution package, first prepare a `pd.DataFrame` containing the columns `x`, `y`, and `z`. Calling `fit` returns a list of `FitResult` objects with the fields shown below. The meaning of each field is explained in the `03_curve_fit` notebook.
+
+```python
+@dataclass
+class FitResult:
+    e1: NDArray[np.float64]
+    e2: NDArray[np.float64]
+    origin: NDArray[np.float64]
+    c_fit: float
+    u0_fit: float
+    v0_fit: float
+    u_start: float
+    u_end: float
+```
+
+Here is a small usage example, similar to the one in the `04_outcome` notebook:
+
+```python
+from solution import fit, plot_fitted_curve
+import matplotlib.pyplot as plt
+
+# data is a pd.DataFrame with columns x, y, z
+fit_results = fit(data)
+
+ax = plt.figure().add_subplot(projection="3d")
+
+# Draw the original points
+ax.scatter(data["x"], data["y"], data["z"], c = "blue", alpha = 0.1, s = 2)
+
+# Draw the fitted curves
+for result in fit_results:
+    plot_fitted_curve(ax, result)
+
+ax.view_init(elev=50, azim=25)
+plt.show()
 ```
