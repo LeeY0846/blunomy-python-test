@@ -16,15 +16,15 @@ class FitResult:
     u_start: float
     u_end: float
 
-def catenary(u, c, u0, v0):
+def catenary(u: NDArray[np.float64], c: float, u0: float, v0: float):
     return v0 + c * (np.cosh((u - u0) / c) - 1.0)
 
-def residuals(params, u, v):
+def residuals(params: NDArray[np.float64], u: NDArray[np.float64], v: NDArray[np.float64]) -> NDArray[np.float64]:
     c, u0, v0 = params
     pred = v0 + c * (np.cosh((u-u0)/c) - 1.0)
     return pred - v
 
-def fit_curve(points):
+def fit_curve(points: NDArray[np.float64]):
     pca = PCA(n_components=3)
     pca.fit(points)
 

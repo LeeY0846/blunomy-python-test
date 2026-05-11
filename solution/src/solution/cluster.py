@@ -21,7 +21,7 @@ def cluster_hdbscan(data: pd.DataFrame):
     clustering = HDBSCAN(copy=True, min_cluster_size=20).fit(X_cluster)
     return clustering.labels_
 
-def cluster_wires(data: pd.DataFrame, cluster_method):
+def cluster_wires(data: pd.DataFrame, cluster_method: str):
     if cluster_method != "hdbscan":
         raise AttributeError(f"Unknown cluster method - {cluster_method}")
     # TODO: Add more cluster methods for broader scenarios
