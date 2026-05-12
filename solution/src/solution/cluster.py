@@ -4,6 +4,7 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import HDBSCAN
 
 def cluster_hdbscan(data: pd.DataFrame):
+    """Cluster point data using PCA-scaled features and HDBSCAN."""
     data = data.copy()
 
     pca_result = PCA(n_components=3).fit_transform(data)
@@ -22,6 +23,7 @@ def cluster_hdbscan(data: pd.DataFrame):
     return clustering.labels_
 
 def cluster_wires(data: pd.DataFrame, cluster_method: str):
+    """Split point data into one dataframe per detected wire cluster."""
     if cluster_method != "hdbscan":
         raise AttributeError(f"Unknown cluster method - {cluster_method}")
     # TODO: Add more cluster methods for broader scenarios

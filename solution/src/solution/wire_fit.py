@@ -17,14 +17,17 @@ class FitResult:
     u_end: float
 
 def catenary(u: NDArray[np.float64], c: float, u0: float, v0: float):
+    """Evaluate a catenary curve for the given local coordinates."""
     return v0 + c * (np.cosh((u - u0) / c) - 1.0)
 
 def residuals(params: NDArray[np.float64], u: NDArray[np.float64], v: NDArray[np.float64]) -> NDArray[np.float64]:
+    """Return catenary prediction errors for least-squares fitting."""
     c, u0, v0 = params
     pred = v0 + c * (np.cosh((u-u0)/c) - 1.0)
     return pred - v
 
 def fit_curve(points: NDArray[np.float64]):
+    """Fit a catenary curve to 3D points representing a single wire."""
     pca = PCA(n_components=3)
     pca.fit(points)
 
