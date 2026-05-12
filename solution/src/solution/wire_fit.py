@@ -15,6 +15,8 @@ class FitResult:
     v0_fit: float
     u_start: float
     u_end: float
+    rmse_3d: float
+    r2: float
 
 def catenary(u: NDArray[np.float64], c: float, u0: float, v0: float):
     """Evaluate a catenary curve for the given local coordinates."""
@@ -74,4 +76,18 @@ def fit_curve(points: NDArray[np.float64]):
 
     c_fit, u0_fit, v0_fit = result.x
 
-    return FitResult(e1, e2, origin, c_fit, u0_fit, v0_fit, u.min(), u.max())
+    # Evaluate the fit
+    v_pred = catenary(u, c_fit, u0_fit, v0_fit)
+    res_curve = v - v_pred
+
+    fitted_points = origin + np.outer(u, e1) + np.outer(v_pred, e2)
+    dist_3d = np.linalg.norm(points - fitted_points, axis=1)
+    # Get RMSE in 3D space
+    rmse_3d = float(np.sqrt(np.mean(dist_3d**2)))
+
+    ss_res = np.sum(res_curve**2)
+    ss_tot = np.sum((v - np.mean(v))**2)
+    # Get R2 for the fitting
+    r2 = 1 - ss_res / ss_tot if ss_tot > 0 else 1.0
+
+    return FitResult(e1, e2, origin, c_fit, u0_fit, v0_fit, u.min(), u.max(), rmse_3d, r2)

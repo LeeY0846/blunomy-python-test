@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+from solution.wire_fit import FitResult
 
 DIFFICULTIES = ["easy","medium","hard","extrahard"]
 
@@ -68,7 +69,7 @@ def assert_close_direction(actual, expected, atol=1e-3, rtol=1e-3, name="directi
     )
 
 
-def assert_fit_result_close(actual, expected, atol=1e-3, rtol=1e-3):
+def assert_fit_result_close(actual: FitResult, expected: FitResult, atol=1e-3, rtol=1e-3):
     assert_close_direction(actual.e1, expected.e1, atol=atol, rtol=rtol, name="e1")
     assert_close_direction(actual.e2, expected.e2, atol=atol, rtol=rtol, name="e2")
     assert_close_array(actual.origin, expected.origin, atol=atol, rtol=rtol, name="origin")
@@ -78,6 +79,8 @@ def assert_fit_result_close(actual, expected, atol=1e-3, rtol=1e-3):
     assert_close_scalar(actual.v0_fit, expected.v0_fit, atol=atol, rtol=rtol, name="v0_fit")
     assert_close_scalar(actual.u_start, expected.u_start, atol=atol, rtol=rtol, name="u_start")
     assert_close_scalar(actual.u_end, expected.u_end, atol=atol, rtol=rtol, name="u_end")
+    assert_close_scalar(actual.rmse_3d, expected.rmse_3d, atol=atol, rtol=rtol, name="rmse_3d")
+    assert_close_scalar(actual.r2, expected.r2, atol=atol, rtol=rtol, name="r2")
 
 
 def assert_fit_result_list_close(actual_list, expected_list, atol=1e-3, rtol=1e-3):
